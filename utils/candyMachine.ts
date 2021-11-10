@@ -182,7 +182,7 @@ export const getCandyMachineState = async (
         const itemsRemaining = itemsAvailable - itemsRedeemed;
 
         let goLiveDate = state.data.goLiveDate.toNumber();
-        goLiveDate = new Date(goLiveDate * 1000);
+        goLiveDate =new Date(parseInt(process.env.NEXT_PUBLIC_CANDY_START_DATE!, 10))
 
         return {
             candyMachine,

@@ -123,6 +123,7 @@ export default function useCandyMachine() {
                     toast.success(
                         "Congratulations! Mint succeeded! Check your wallet :)"
                     );
+                    
                 } else {
                     toast.error("Mint failed! Please try again!");
                 }
