@@ -8,13 +8,15 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import useCandyMachine from "../hooks/useCandyMachine";
 import useWalletBalance from "../hooks/useWalletBalance";
 import { useWallet } from "@solana/wallet-adapter-react";
-
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import Preloader from "../components/Preloader/Preloader";
+import Timer from "../components/Countdown/Timer";
 import { Toaster } from "react-hot-toast";
 import Countdown from "react-countdown";
 import useWalletNfts from "../hooks/useWalletNFTs";
 import AnNFT from "../components/AnNFT/AnNFT";
-import CountDownClockTS from "../components/CountDown"
 import ReactDOM from 'react-dom';
+import { setYear } from "date-fns";
 export default function Home() {
   const [balance] = useWalletBalance();
   const {
@@ -32,74 +34,28 @@ export default function Home() {
 
   const [isMintLive, setIsMintLive] = useState(false);
   const hStyle = { color:'#793ef9' };
-  useEffect(() => {
-    console.log(new Date(mintStartDate)
-    )
-    if (new Date(mintStartDate).getTime() < Date.now()) {
-      setIsMintLive(true);
-    }
-  }, []);
+
   function percentage(partialValue:number, totalValue:number) {
     return (100 * partialValue) / totalValue+"%";
  } 
 
- let nicedatacountdown
- const SetupNiceTImer=(x:any)=>{
-  return(
-    <>
-      <div className="grid grid-flow-col gap-5 text-center auto-cols-max">
-      <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
-        <span className="font-mono text-5xl countdown">
-          <span>{x.days}</span>
-        </span>
-            days
-          
-      </div> 
-      <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
-        <span className="font-mono text-5xl countdown">
-          <span >{x.hours}</span>
-        </span>
-            hours
-          
-      </div> 
-      <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
-        <span className="font-mono text-5xl countdown">
-          <span>{x.minutes}</span>
-        </span>
-            min
-          
-      </div> 
 
-    </div>
-    </>
-)
- }
-  const MintMany = () => {
-    const [mintCount, setMintCount] = useState(5);
 
-    return (
-      <>
-        <button
-          onClick={() => startMintMultiple(mintCount)}
-          disabled={isMinting}
-          className="px-4 py-2 mx-auto font-bold text-white transition-opacity rounded-lg hover:opacity-70 bg-gradient-to-br from-green-300 via-blue-500 to-purple-600"
-        >
-          {isMinting ? "loading" : `mint ${mintCount}`}
-        </button>
+useEffect(() => {
+  console.log(process.env.NEXT_PUBLIC_CANDY_START_DATE)
+  console.log(new Date(Number(process.env.NEXT_PUBLIC_CANDY_START_DATE+"000")))
+  console.log(new Date(mintStartDate).getTime())
+  
+  if (new Date(mintStartDate).getTime() < Date.now()) {
+    setIsMintLive(true);
+    console.log("Starting date is lower than current date")
+  }
 
-        <input
-          disabled={isMinting}
-          type="number"
-          min={2}
-          max={10}
-          className="px-2 mx-auto mt-5 font-bold text-white bg-gray-500"
-          value={mintCount}
-          onChange={(e) => setMintCount((e.target as any).value)}
-        />
-        <p className="mx-auto mt-2">min 2; max 10;</p>
-      </>
-    );
-  };
+
+}, []);
+
+
+
 
   return (
     <>
@@ -188,20 +144,20 @@ export default function Home() {
           {connected ? (
             <>
               {new Date(mintStartDate).getTime() < Date.now() ? (
+                
                 <>
                   {isSoldOut ? (
                     <div className="alert">
-  <div className="flex-1">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="#ff5722" className="w-6 h-6 mx-2">    
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>                      
-    </svg> 
-    <label>The Drop has sold out</label>
-  </div> 
-</div>
+                        <div className="flex-1">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="#ff5722" className="w-6 h-6 mx-2">    
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>                      
+                          </svg> 
+                          <label>The Drop has sold out</label>
+                        </div> 
+                  </div>
                   ) 
                   : 
                   (
-
                     <>
                       <div className="">
                         <button
@@ -213,41 +169,50 @@ export default function Home() {
                           {isMinting ? "Loading" : "Mint"}
                         </button>
                       </div>
-                      <div className="flex flex-col w-1/2">
-
-                      </div>
                     </>
                   )}
                 </>
               ) : (
-                <Countdown
+
+                <div >
+                  <Timer />
+                  <Preloader />
+                  <Countdown
+                  className="hidden"
                   date={mintStartDate}
                   onMount={({ completed }) => completed && setIsMintLive(true)}
                   onComplete={() => setIsMintLive(true)}
-                  />)}</>
+                />
+                  </div>
+
+                  
+                  
+                  
+                  )}
+                  
+                  
+                  </>
   ) : (
 
-<div id="bigboy">
+<div className="kuku">
 
-  <Countdown 
-  className="stat-figure"
-  date={Date.now() + 10000}
-  onMount={({ completed }) => completed && setIsMintLive(true)}
-  onComplete={() => console.log("Task done")}
-  onPause={()=>{console.log("timer paused")}}
-  onTick={(props)=>{
-    nicedatacountdown={props}
-    console.log(nicedatacountdown)
-  }}
-  />
-<CountDownClockTS/>
-
-
+<div className="alert">
+  <div className="flex-1">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="#ff5722" className="w-6 h-6 mx-2">    
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>                      
+    </svg> 
+    <label>Connect your wallet</label>
+  </div> 
+</div>
+        <Preloader />
+        
 </div>
 
 
           )}
         </div>
+
+
         {connected&&(
           <div className="">
           <div id="ownednfts">
