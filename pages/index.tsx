@@ -8,15 +8,12 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import useCandyMachine from "../hooks/useCandyMachine";
 import useWalletBalance from "../hooks/useWalletBalance";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import Preloader from "../components/Preloader/Preloader";
 import Timer from "../components/Countdown/Timer";
 import { Toaster } from "react-hot-toast";
 import Countdown from "react-countdown";
 import useWalletNfts from "../hooks/useWalletNFTs";
 import AnNFT from "../components/AnNFT/AnNFT";
-import ReactDOM from 'react-dom';
-import { setYear } from "date-fns";
 export default function Home() {
   const [balance] = useWalletBalance();
   const {
