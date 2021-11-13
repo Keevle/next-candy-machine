@@ -5,8 +5,8 @@
 
 # next-candy-machine
 
-![image](https://user-images.githubusercontent.com/29241388/136246410-7deb9afd-4809-4b75-848f-d9a99b7d1ff7.png)
-![image](https://user-images.githubusercontent.com/29241388/136248758-2b06398f-1774-486d-a685-3fb6c1ebb11c.png)
+![image](https://i.imgur.com/sb6SPo6.png)
+![image](https://i.imgur.com/zqD10MM.png)
 
 The Candy-Machine-Mint project is designed to let users fork, customize, and deploy their own candy machine mint app to a custom domain, ultra fast.
 
